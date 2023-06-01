@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +25,10 @@ public class Menu {
     
     @Column(name = "MENTIPO")
     private String tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "USERID", nullable = false)
+    private User user;
 
     public String getTipo() {
         return tipo;

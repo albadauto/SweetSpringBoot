@@ -2,6 +2,7 @@ package br.com.sweetspring.sweetspring.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -22,6 +24,18 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
+
+    @OneToMany(mappedBy = "user")   
+    private List<Menu> Menus;
+
+    public List<Menu> getMenus() {
+        return Menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        Menus = menus;
+    }
+
 
     public int getId() {
         return Id;

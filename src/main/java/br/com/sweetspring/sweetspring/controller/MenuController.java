@@ -1,4 +1,5 @@
 package br.com.sweetspring.sweetspring.controller;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,40 +22,64 @@ public class MenuController {
     private MenuRepository menuRepository;
 
     @PostMapping("/CreateMenu")
-    public Menu CreateMenu(@RequestBody Menu menu){
-        return this.menuRepository.save(menu);
+    public ResponseEntity<?> CreateMenu(@RequestBody Menu menu) {
+        if (menu == null)
+            return ResponseEntity.badRequest().body(new ResponseHttpAPI<>() {
+                {
+                    success = false;
+                    message = "Favor inserir um objeto";
+                    data = null;
+                }
+            });
+
+        this.menuRepository.save(menu);
+
+        return ResponseEntity.ok().body(new ResponseHttpAPI<>() {
+            {
+                success = true;
+                message = "Inserido com sucesso";
+                data = null;
+            }
+        });
     }
 
-
     @GetMapping("/GetAllMenu")
-    public ResponseEntity<?> GetAllMenu(){
+    public ResponseEntity<?> GetAllMenu() {
         var finded = this.menuRepository.findAll();
-        if(finded.size() > 0){
-            return ResponseEntity.ok().body(new ResponseHttpAPI<List<Menu>>(){{
-                success = true;
-                data = finded;
-                message = "Registros encontrados com sucesso";
-            }});
-        }else{
-            return ResponseEntity.badRequest().body(new ResponseHttpAPI<List<Menu>>(){{
-                success = false;
-                data = null;
-                message = "Não há registros";
-            }});
+        if (finded.size() > 0) {
+            return ResponseEntity.ok().body(new ResponseHttpAPI<List<Menu>>() {
+                {
+                    success = true;
+                    data = finded;
+                    message = "Registros encontrados com sucesso";
+                }
+            });
+        } else {
+            return ResponseEntity.badRequest().body(new ResponseHttpAPI<List<Menu>>() {
+                {
+                    success = false;
+                    data = null;
+                    message = "Não há registros";
+                }
+            });
         }
     }
 
-
     @DeleteMapping("/DeleteAllMenu")
-    public ResponseEntity<?> DeleteAllMenu(){
-        this.menuRepository.TruncateMenu();
-        return ResponseEntity.ok().body(new ResponseHttpAPI<>() {{
-            success = true;
-            data = null; 
-            message = "Registros apagados com sucesso";
-        }});
+    public ResponseEntity<?> DeleteAllMenu() {
+        try {
+            this.menuRepository.TruncateMenu();
+            return ResponseEntity.ok().body(new ResponseHttpAPI<>() {
+                {
+                    success = true;
+                    data = null;
+                    message = "Registros apagados com sucesso";
+                }
+            });
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
-
-
 
 }
