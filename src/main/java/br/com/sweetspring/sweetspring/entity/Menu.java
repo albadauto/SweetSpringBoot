@@ -26,8 +26,17 @@ public class Menu {
     @Column(name = "MENTIPO")
     private String tipo;
 
+    @Column(nullable = false)
+    private int userid;
+
+    public int getUserid() {
+        return userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
     @ManyToOne
-    @JoinColumn(name = "USERID", nullable = false)
+    @JoinColumn(name = "USERID", nullable = false, referencedColumnName = "USUID", insertable = false, updatable = false) //Retira a capacidade de ter insert e update nessa propriedade
     private User user;
 
     public String getTipo() {

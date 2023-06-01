@@ -23,24 +23,35 @@ public class MenuController {
 
     @PostMapping("/CreateMenu")
     public ResponseEntity<?> CreateMenu(@RequestBody Menu menu) {
-        if (menu == null)
-            return ResponseEntity.badRequest().body(new ResponseHttpAPI<>() {
+
+        try {
+            if (menu == null)
+                return ResponseEntity.badRequest().body(new ResponseHttpAPI<>() {
+                    {
+                        success = false;
+                        message = "Favor inserir um objeto";
+                        data = null;
+                    }
+                });
+
+            this.menuRepository.save(menu);
+
+            return ResponseEntity.ok().body(new ResponseHttpAPI<>() {
                 {
-                    success = false;
-                    message = "Favor inserir um objeto";
+                    success = true;
+                    message = "Inserido com sucesso";
                     data = null;
                 }
             });
-
-        this.menuRepository.save(menu);
-
-        return ResponseEntity.ok().body(new ResponseHttpAPI<>() {
-            {
-                success = true;
-                message = "Inserido com sucesso";
-                data = null;
-            }
-        });
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseHttpAPI<>() {
+                {
+                    success = false;
+                    message = e.getMessage();
+                    data = null;
+                }
+            });
+        }
     }
 
     @GetMapping("/GetAllMenu")
