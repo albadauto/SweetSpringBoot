@@ -1,12 +1,16 @@
 package br.com.sweetspring.sweetspring.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.sweetspring.sweetspring.dto.PaymentDTO;
 import br.com.sweetspring.sweetspring.entity.Payment;
 import br.com.sweetspring.sweetspring.entity.ResponseHttpAPI;
 import br.com.sweetspring.sweetspring.repository.PaymentRepository;
@@ -30,7 +34,6 @@ public class PaymentController {
             });
         }
             
-
         this.paymentRepository.save(payment);
         return ResponseEntity.ok().body(new ResponseHttpAPI<Payment>(){{
             success = true;
@@ -38,5 +41,12 @@ public class PaymentController {
             message = "Pagamento inserido com sucesso";
         }});
     }
+
+    @GetMapping("/GetAllPayments")
+    public List<Payment> GetAllPayments(){
+        return this.paymentRepository.findAllPayments();
+    }
+
+
 
 }

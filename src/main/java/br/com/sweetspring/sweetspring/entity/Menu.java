@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,6 +39,9 @@ public class Menu {
     @ManyToOne
     @JoinColumn(name = "USERID", nullable = false, referencedColumnName = "USUID", insertable = false, updatable = false) //Retira a capacidade de ter insert e update nessa propriedade
     private User user;
+
+    @OneToOne(mappedBy = "menu")
+    private Payment payment;
 
     public String getTipo() {
         return tipo;

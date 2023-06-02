@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -30,6 +31,9 @@ public class User implements UserDetails{
 
     @OneToMany(mappedBy = "user")
     private List<Payment> pagamentos;
+
+    @OneToOne(mappedBy = "user")
+    private Payment payment;
 
     public List<Menu> getMenus() {
         return Menus;
